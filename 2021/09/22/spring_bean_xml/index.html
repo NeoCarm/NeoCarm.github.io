@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   
-  <title itemprop="name">Tag: 悦读 | NeoCarm</title>
+  <title itemprop="name">SpringBeanConfiguration | NeoCarm</title>
   
     <link rel="shortcut icon" href="/img/custom/avatar.jpg">
   
@@ -218,64 +218,224 @@
   </div>
 </header>
 
-      
+      <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
 <div class="pattern-center-blank"></div>
-<div class="pattern-center ">
-  <div class="pattern-attachment-img">
-    <img src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/banner/reading.jpg" class="lazyload" onerror="imgError(this,3)" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+
+  <div class="pattern-center single-center">
+    <!-- 有配图默认渲染第一张 -->
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/NeoCarm/cdn@1.2/img/pages/summer.png);" src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/NeoCarm/cdn@1.2/img/pages/summer.png">
+    </div>
+    <header class="pattern-header single-header">
+      <h1 class="entry-title">
+      SpringBeanConfiguration</h1>
+      <p class="entry-census">
+        <span>
+          <a href="https://neocarm.github.io">
+            <img src="https://cdn.jsdelivr.net/gh/NeoCarm/cdn@1.2/img/custom/avatar.jpg">
+          </a>
+        </span>
+        <span>
+          <a href="https://neocarm.github.io">NeoCarm</a>
+        </span>
+        <span class="bull">
+        ·</span>
+        2021-9-22<span class="bull">
+        ·</span>
+      <span id="busuanzi_value_page_pv"></span>次阅读</p>
+    </header>
   </div>
-  <header class="pattern-header ">
-    <h1 class="cat-title">悦读</h1>
-  </header>
-</div>
+
 <div id="content" class="site-content">
   <div id="primary" class="content-area">
     <main id="main" class="site-main" role="main">
-      
-  <!-- 首页默认取最最新文章集 -->
-  
-    <article class="post post-list" itemscope="" itemtype="https://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2018/12/12/Hexo-Theme-Sakura/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+        <div class="entry-content">
+          <pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+
+    &lt;context:annotation-config/&gt;
+    &lt;!-- id代表了此实例 类似于实例化的对象
+    名字 class指明实例的全类名 name=&quot;xxx&quot; 表示别名 与alias相同--&gt;
+    &lt;bean id=&quot;user_1&quot; class=&quot;org.nekocharm.entity.User&quot; name=&quot;user_11&quot;&gt;
+        &lt;!-- name=&quot;xxx&quot; 指明具体属性 value=&quot;xxx&quot; 给对应的属性赋值 只限于基本数据类型 引用型要用ref --&gt;
+        &lt;property name=&quot;name&quot; value=&quot;user1&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- 通过alias标签取别名 --&gt;
+    &lt;alias  name=&quot;user_1&quot; alias=&quot;alias_user_1&quot; /&gt;
+
+    &lt;!-- 通过构造器参数注入依赖 参数列表不存在前后关系 因为通过name寻找--&gt;
+    &lt;bean id=&quot;another_user&quot; class=&quot;org.nekocharm.entity.AnotherUser&quot;&gt;
+        &lt;constructor-arg name=&quot;id&quot; value=&quot;1&quot; /&gt;
+        &lt;constructor-arg name=&quot;name&quot; value=&quot;another_user&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- 通过构造器参数注入依赖 参数列表存在前后关系 因为通过参数列表下标进行寻找 type 可以不加--&gt;
+    &lt;bean id=&quot;another_user_1&quot; class=&quot;org.nekocharm.entity.AnotherUser&quot;&gt;
+        &lt;constructor-arg index=&quot;0&quot; type=&quot;java.lang.String&quot; value=&quot;another_user_1&quot; /&gt;
+        &lt;constructor-arg index=&quot;1&quot; type=&quot;int&quot; value=&quot;1&quot; /&gt; &lt;!-- type中不能使用包装类名 如果属性为基本数据类型的话 --&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;example&quot; class=&quot;org.nekocharm.entity.Example&quot; &gt;
+        &lt;property name=&quot;name&quot; value=&quot;example_name&quot; /&gt;
+        &lt;property name=&quot;id&quot; value=&quot;1&quot; /&gt;
+        &lt;property name=&quot;user&quot; ref=&quot;example_user&quot; /&gt;
+        &lt;property name=&quot;properties&quot;&gt; &lt;!-- 设置配置文件属性 --&gt;
+            &lt;value&gt;
+                username=root
+                password=root
+                url=jdbc:mysql://localhost:3306/test
+            &lt;/value&gt;
+        &lt;/property&gt;
+        &lt;property name=&quot;map&quot;&gt; &lt;!-- 设置Map属性 --&gt;
+            &lt;map&gt;
+                &lt;!-- &lt;entry key-ref=&quot;&quot; value-ref=&quot;&quot; /&gt; Map中引用数据类型设置方式 --&gt;
+                &lt;entry key=&quot;one&quot; value=&quot;value_1&quot;/&gt;
+                &lt;entry key=&quot;two&quot; value=&quot;value_2&quot;/&gt;
+            &lt;/map&gt;
+        &lt;/property&gt;
+        &lt;property name=&quot;object&quot;&gt; &lt;!-- 设置Null属性 --&gt;
+            &lt;null /&gt;
+        &lt;/property&gt;
+        &lt;property name=&quot;list&quot;&gt; &lt;!-- 设置List属性 --&gt;
+            &lt;list&gt;      &lt;!-- &lt;![CDATA[]]&gt; 使用这个来注入一些特殊字符 --&gt;
+                &lt;value type=&quot;java.lang.String&quot;&gt;&lt;![CDATA[《ABook》]]&gt;&lt;/value&gt;
+                &lt;!-- &lt;ref bean=&quot;&quot; /&gt; List中引用数据类型的设置方式 --&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+        &lt;property name=&quot;set&quot;&gt;
+            &lt;set&gt;
+                &lt;value type=&quot;java.lang.String&quot;&gt;a set item&lt;/value&gt;
+                &lt;!-- &lt;ref bean=&quot;&quot; /&gt; Set中引用数据类型的设置方式 --&gt;
+            &lt;/set&gt;
+        &lt;/property&gt;
+        &lt;property name=&quot;arrayOfString&quot;&gt;
+            &lt;array&gt;
+                &lt;value type=&quot;java.lang.String&quot; &gt;a array item&lt;/value&gt;
+                &lt;!-- &lt;ref bean=&quot;&quot; /&gt; Array中引用数据类型的设置方式 --&gt;
+            &lt;/array&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;example_user&quot; class=&quot;org.nekocharm.entity.User&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;example_user&quot;/&gt;
+    &lt;/bean&gt;
+
+
+
+&lt;!--
+    annotation_example中 需要注入Cat cat 和 Dog dog 使用@Autowired 如果有多个类型则寻找id=cat和id=dog的bean
+    如果没有则需要配合@Qualifier(value=&quot;actualId&quot;)使用 找到真正需要注入的bean
+ --&gt;
+    &lt;bean id=&quot;catX&quot; class=&quot;org.nekocharm.entity.Cat&quot; p:name=&quot;cat&quot;/&gt;
+    &lt;bean id=&quot;cat1&quot; class=&quot;org.nekocharm.entity.Cat&quot; p:name=&quot;cat1&quot;/&gt;
+    &lt;bean id=&quot;dogX&quot; class=&quot;org.nekocharm.entity.Dog&quot; p:name=&quot;dog&quot;/&gt;
+    &lt;bean id=&quot;dog1&quot; class=&quot;org.nekocharm.entity.Dog&quot; p:name=&quot;dog1&quot;/&gt;
+
+    &lt;bean id=&quot;annotation_example&quot; class=&quot;org.nekocharm.entity.AnnotationExample&quot; /&gt;
+
+    &lt;!-- 可以注册bean的时候 使用autowire 设置自动装配的方式 但不如@Autowired 因为只能设置一种查找注入方式 不泛用 --&gt;
+    &lt;!--
+        &lt;bean id=&quot;annotation_example_1&quot; class=&quot;org.nekocharm.entity.AnnotationExample&quot; autowire=&quot;byName&quot;/&gt;
+    --&gt;
+
+&lt;/beans&gt;
+</code></pre>
+
         </div>
-        <img width="150" height="150" src="https://static.2heng.xin/wp-content/uploads//2019/02/wallhaven-672007-1-1024x576.png" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2018/12/12/Hexo-Theme-Sakura/">
-    Hexo-Theme-Sakura</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2018-12-12</div>
-    <p>
-    hexo-sakura主题使用教程</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2018/12/12/Hexo-Theme-Sakura/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-
-
-      <div class="clearer">
-      </div>
-    </main>
-    <!--  -->
-    
-  </div>
+        <!-- .entry-content -->
+        <div class="single-reward">
+          <div class="reward-open">赏
+            <div class="reward-main">
+              <ul class="reward-row">
+                <li class="alipay-code"><img src="https://cdn.jsdelivr.net/gh/NeoCarm/cdn@1.2/img/custom/donate/AliPayQR.jpg"></li>
+                <li class="wechat-code"><img src="https://cdn.jsdelivr.net/gh/NeoCarm/cdn@1.2/img/custom/donate/WeChanQR.jpg"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
+      </article>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+          
+            <div class="post-nepre half previous">
+          
+            <a href="/2021/09/22/hello-world/" rel="prev">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/NeoCarm/cdn@1.2/img/pages/bg1.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/NeoCarm/cdn@1.2/img/pages/bg1.jpg">
+              </div>
+              <span class="label">
+              Previous Post</span>
+              <div class="info">
+                <h3>
+                HelloWorld</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+        
+          
+            <div class="post-nepre half next">
+          
+            <a href="/2021/09/22/log4j_properties/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/NeoCarm/cdn@1.2/img/pages/assassinate.webp" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/NeoCarm/cdn@1.2/img/pages/assassinate.webp">
+              </div>
+              <span class="label">
+              Next Post</span>
+              <div class="info">
+                <h3>
+                LOG4J</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+      </section>
+      
+      <section class="author-profile">
+        <div class="info" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
+          <a href="https://neocarm.github.io" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/NeoCarm/cdn@1.2/img/custom/avatar.jpg" itemprop="image" alt="NeoCarm" height="70" width="70"></a>
+          <div class="meta">
+            <span class="title">Author</span>
+            <h3 itemprop="name">
+            <a href="https://neocarm.github.io" itemprop="url" rel="author">NeoCarm</a>
+            </h3>
+          </div>
+        </div>
+        <hr>
+        <p><i class="iconfont icon-write"></i>NekoCharm</p>
+      </section>
+    </main><!-- #main -->
+  </div><!-- #primary -->
 </div>
+
+
+
     </div>    
     <div class="ins-search">
     <div class="ins-search-mask"></div>
